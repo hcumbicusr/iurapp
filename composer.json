@@ -1,0 +1,29 @@
+{
+    "name": "iurapp/printer",
+    "type": "project",
+    "description": "",
+    "homepage": "http://iurapp.com",
+    "keywords": ["iurapp", "print"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Henry c.",
+            "email": "hcumbicusr@gmail.com"
+        }
+    ],
+    "config": {
+        "platform": {
+            "php": "7.1.5"
+        }
+    },
+    "require": {
+        "php": ">=5.6",
+        "ext-mbstring": "*",
+        "mike42/escpos-php": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Iurapp\\": "ws"
+        }
+    }
+}
