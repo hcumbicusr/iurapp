@@ -22,7 +22,11 @@ if ( !empty($request) ) {
 	$accion = $request['accion'];
 	switch ($accion) {
 		case 'imprimir':
-			$response = ["status" => "success", "message" => $request];
+			require 'Impresora.php';
+			$o = new Iurapp\Impresora();
+			$p = $o->imprimir($request);
+			// $p = $o->templateComprobante($request);
+			$response = ["status" => "success", "message" => $p];
 			break;
 		
 		default:
@@ -33,10 +37,10 @@ if ( !empty($request) ) {
 	$response = ["status" => "error", "message" => "Acción no encontrada."];
 	$http_code = 404;
 }
-// echo json_encode($response);
-// http_response_code($http_code);
-// exit;
-require 'Impresora.php';
-$o = new Iurapp\Impresora();
-$o->imprimir(1);
+// $o->imp();
+echo json_encode($response);
+http_response_code($http_code);
+exit;
+// echo "<pre>";
+// var_dump($p);
 // $o->test();

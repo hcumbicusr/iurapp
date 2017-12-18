@@ -11,9 +11,12 @@
 require __DIR__ . '/vendor/autoload.php';
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\EscposImage;
 
-$connector = new FilePrintConnector("php://stdout");
+$connector = "SP500";
+// $connector = new FilePrintConnector("php://stdout");
+$connector = new WindowsPrintConnector($connector);
 $printer = new Printer($connector);
 
 /* Initialize */
@@ -48,7 +51,7 @@ for ($i = 0; $i < pow(2, count($modes)); $i++) {
         }
     }
     $printer -> selectPrintMode($mode);
-    $printer -> text("ABCDEFGHIJabcdefghijk\n");
+    $printer -> text("ABCDEFGHIJabcdefghijk-$i\n");
 }
 $printer -> selectPrintMode(); // Reset
 $printer -> cut();
@@ -108,63 +111,63 @@ $printer -> setJustification(); // Reset
 $printer -> cut();
 
 /* Barcodes - see barcode.php for more detail */
-$printer -> setBarcodeHeight(80);
-$printer->setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
-$printer -> barcode("9876");
-$printer -> feed();
-$printer -> cut();
+// $printer -> setBarcodeHeight(80);
+// $printer->setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
+// $printer -> barcode("9876");
+// $printer -> feed();
+// $printer -> cut();
 
 /* Graphics - this demo will not work on some non-Epson printers */
-try {
-    $logo = EscposImage::load("resources/escpos-php.png", false);
-    $imgModes = array(
-        Printer::IMG_DEFAULT,
-        Printer::IMG_DOUBLE_WIDTH,
-        Printer::IMG_DOUBLE_HEIGHT,
-        Printer::IMG_DOUBLE_WIDTH | Printer::IMG_DOUBLE_HEIGHT
-    );
-    foreach ($imgModes as $mode) {
-        $printer -> graphics($logo, $mode);
-    }
-} catch (Exception $e) {
-    /* Images not supported on your PHP, or image file not found */
-    $printer -> text($e -> getMessage() . "\n");
-}
+// try {
+//     $logo = EscposImage::load("resources/escpos-php.png", false);
+//     $imgModes = array(
+//         Printer::IMG_DEFAULT,
+//         Printer::IMG_DOUBLE_WIDTH,
+//         Printer::IMG_DOUBLE_HEIGHT,
+//         Printer::IMG_DOUBLE_WIDTH | Printer::IMG_DOUBLE_HEIGHT
+//     );
+//     foreach ($imgModes as $mode) {
+//         $printer -> graphics($logo, $mode);
+//     }
+// } catch (Exception $e) {
+//     /* Images not supported on your PHP, or image file not found */
+//     $printer -> text($e -> getMessage() . "\n");
+// }
 $printer -> cut();
 
 /* Bit image */
-try {
-    $logo = EscposImage::load("resources/escpos-php.png", false);
-    $imgModes = array(
-        Printer::IMG_DEFAULT,
-        Printer::IMG_DOUBLE_WIDTH,
-        Printer::IMG_DOUBLE_HEIGHT,
-        Printer::IMG_DOUBLE_WIDTH | Printer::IMG_DOUBLE_HEIGHT
-    );
-    foreach ($imgModes as $mode) {
-        $printer -> bitImage($logo, $mode);
-    }
-} catch (Exception $e) {
-    /* Images not supported on your PHP, or image file not found */
-    $printer -> text($e -> getMessage() . "\n");
-}
+// try {
+//     $logo = EscposImage::load("resources/escpos-php.png", false);
+//     $imgModes = array(
+//         Printer::IMG_DEFAULT,
+//         Printer::IMG_DOUBLE_WIDTH,
+//         Printer::IMG_DOUBLE_HEIGHT,
+//         Printer::IMG_DOUBLE_WIDTH | Printer::IMG_DOUBLE_HEIGHT
+//     );
+//     foreach ($imgModes as $mode) {
+//         $printer -> bitImage($logo, $mode);
+//     }
+// } catch (Exception $e) {
+//     /* Images not supported on your PHP, or image file not found */
+//     $printer -> text($e -> getMessage() . "\n");
+// }
 $printer -> cut();
 
 /* QR Code - see also the more in-depth demo at qr-code.php */
-$testStr = "Testing 123";
-$models = array(
-    Printer::QR_MODEL_1 => "QR Model 1",
-    Printer::QR_MODEL_2 => "QR Model 2 (default)",
-    Printer::QR_MICRO => "Micro QR code\n(not supported on all printers)");
-foreach ($models as $model => $name) {
-    $printer -> qrCode($testStr, Printer::QR_ECLEVEL_L, 3, $model);
-    $printer -> text("$name\n");
-    $printer -> feed();
-}
+// $testStr = "Testing 123";
+// $models = array(
+//     Printer::QR_MODEL_1 => "QR Model 1",
+//     Printer::QR_MODEL_2 => "QR Model 2 (default)",
+//     Printer::QR_MICRO => "Micro QR code\n(not supported on all printers)");
+// foreach ($models as $model => $name) {
+//     $printer -> qrCode($testStr, Printer::QR_ECLEVEL_L, 3, $model);
+//     $printer -> text("$name\n");
+//     $printer -> feed();
+// }
 $printer -> cut();
 
 /* Pulse */
-$printer -> pulse();
+// $printer -> pulse();
 
 /* Always close the printer! On some PrintConnectors, no actual
  * data is sent until the printer is closed. */
